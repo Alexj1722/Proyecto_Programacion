@@ -41,6 +41,7 @@ class Main(QWidget):
         
     def layouts(self):
         """Layouts que componen el programa"""
+        #Layouts
         self.main_layout = QHBoxLayout()
         self.left_layout = QFormLayout()
         self.right_main_layout = QVBoxLayout()
@@ -50,9 +51,14 @@ class Main(QWidget):
         #Agregar los layout hijos al padre
         self.right_main_layout.addLayout(self.right_top_layout)
         self.right_main_layout.addLayout(self.right_bottom_layout)
-        self.main_layout.addLayout(self.left_layout,50)
-        self.main_layout.addLayout(self.right_main_layout,70)
+        self.main_layout.addLayout(self.left_layout,25)
+        self.main_layout.addLayout(self.right_main_layout,75)
         
+        #Asignar widgets a los layouts
+        self.right_top_layout.addWidget(self.lista_Clientes)
+        self.left_layout.addWidget(self.btn_nuevo)
+        self.left_layout.addWidget(self.btn_Actualizar)
+        self.left_layout.addWidget(self.btn_Eliminar)
         #Colocar el layout principal en la ventana principal
         self.setLayout(self.main_layout)
 
