@@ -23,7 +23,7 @@ class Main(QWidget):
         super().__init__()
         #empezamos creando o abriendo la conexion a la base de datos
         self.cliente_db = Cliente_DB("Clientes.db")
-        self.windowTitle("Gestion de clientes")
+        self.setWindowTitle("Gestion de clientes")
         self.UI()
         self.show()
         
@@ -62,13 +62,58 @@ class Main(QWidget):
         #Colocar el layout principal en la ventana principal
         self.setLayout(self.main_layout)
 
+class Cliente_DB:
+    """Creacion de la base de datos en SQLite para los clientes. """
+    def __init__(self, db_nombre):
+        """ Inicializador de la clase"""
+        self.conexion = self.create_conection(db_nombre)
+        self.cliente_query= """ CREATE TABLE IF NOT EXISTS Clientes(
+                                    id integer PRIMARY KEY,
+                                    nombre text NOT NULL,
+                                    apellido text NOT NULL,
+                                    sexo text NOT NULL,
+                                    fecha_Nacimiento text NOT NULL,
+                                    pais text NOT NULL,
+                                    telefono text NOT NULL
+                                     );
+                            """ 
+        self.create_table(self.conexion, self.cliente_query)
+        
+    def create_conection(self, db_nombre):
+        """Crear la conexion a la base de datos SQLite. """
+        conexion=None
+        
+        #Intento de conectar
+        try:
+            conexion = sqlite3.connect(db_nombre)
+            print("Conexion realizada. Version {}".format(sqlite3.version))
+        except Error as e:
+            print (e)
+        finally: 
+            return conexion
+    
+    def create_table(self, conexion, query):
+        """
+        crea una tabla basada en los valores de query 
+        Parametros:
+        conexion: Conexion a la base de datos.
+        query: contiene la instrucion de CREATE QUERY
+        return: 
+        """
+        try:
+            cursor= conexion.cursor()
+            cursor.execute(query)
+        except Error as e:
+            print (e)                    
+                            
+                            
 def main():
     app = QApplication(sys.argv)
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     window = Main()
     window.showMaximized()
     sys.exit(app.exec_())
     
 if __name__ == "__main__":
-    
     main()
    
